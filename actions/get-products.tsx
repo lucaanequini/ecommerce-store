@@ -1,6 +1,6 @@
 import qs from 'query-string';
 
-import { Product } from "@/types";
+import { Product, ProductSize } from "@/types";
 
 
 interface Query {
@@ -18,15 +18,23 @@ const getProducts = async (query: Query): Promise<Product[]> => {
         url: URL,
         query: {
             colorId: query.colorId,
-            sizeId: query.sizeId,
             categoryId: query.categoryId,
             isFeatured: query.isFeatured
+            // Note que sizeId não é mais passado aqui
         }
-    })
+    });
 
-    const res = await fetch(url)
+    const res = await fetch(url);
+    const products: Product[] = await res.json();
 
-    return res.json()
+    // Filtrar produtos pelo sizeId, se sizeId for fornecido
+    if (query.sizeId) {
+        return products.filter(product =>
+            product.sizes.some((size: ProductSize) => size.sizeId === query.sizeId)
+        );
+    }
+
+    return products;
 }
 
 export default getProducts

@@ -1,4 +1,4 @@
-import { Product, Size } from "@/types"
+import { Product, Size, ProductSize } from "@/types"
 import { NoResults } from "@/components/ui/no-results"
 import { ProductCard } from "@/components/ui/product-card"
 
@@ -13,7 +13,6 @@ export const ProductList: React.FC<ProductListProps> = ({
     items,
     sizes
 }) => {
-    console.log(sizes)
     return (
         <div className="space-y-4">
             <h3 className="font-bold text-3xl">{title}</h3>

@@ -69,6 +69,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
                                     <ProductCard
                                         key={product.id}
                                         data={product}
+                                        sizes={sizes}
                                     />
                                 ))}
                             </div>

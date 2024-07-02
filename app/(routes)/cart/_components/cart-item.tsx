@@ -19,7 +19,7 @@ export const CartItem: React.FC<CartItemProps> = ({
     const cart = useCart()
 
     const onRemove = () => {
-        cart.removeItem(data.product.id)
+        cart.removeItem(data.product.id, data.size.id)
     }
 
     if (!data.product) return null

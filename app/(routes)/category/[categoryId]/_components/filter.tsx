@@ -20,28 +20,29 @@ export const Filter: React.FC<FilterProps> = ({
 }) => {
     const searchParams = useSearchParams()
     const router = useRouter()
-
-    const selectedValue = searchParams.get(valueKey)
+    const selectedValues = searchParams.get(valueKey)?.split(',') || [];
 
     const onClick = (id: string) => {
-        const current = qs.parse(searchParams.toString())
+        const current = qs.parse(searchParams.toString());
+        let updatedSelectedValues = [...selectedValues];
+
+        if (selectedValues.includes(id)) {
+            updatedSelectedValues = updatedSelectedValues.filter(value => value !== id);
+        } else {
+            updatedSelectedValues.push(id);
+        }
 
         const query = {
             ...current,
-            [valueKey]: id
+            [valueKey]: updatedSelectedValues.join(',')
+        };
+
+        if (updatedSelectedValues.length === 0) {
+            delete query[valueKey];
         }
 
-        if (current[valueKey] === id) {
-            query[valueKey] = null
-        }
-
-        const url = qs.stringifyUrl({
-            url: window.location.href,
-            query
-        }, { skipNull: true })
-
-        router.push(url)
-    }
+        router.push(`${window.location.pathname}?${qs.stringify(query)}`);
+    };
 
     return (
         <div className='mb-8'>
@@ -51,7 +52,7 @@ export const Filter: React.FC<FilterProps> = ({
                 {data.map((filter) => (
                     <div key={filter.id} className='flex items-center'>
                         <Button className={cn('rounded-md text-sm text-gray-800 p-2 bg-white border border-gray-300',
-                            selectedValue === filter.id && 'bg-black text-white')
+                            selectedValues.includes(filter.id) && 'bg-black text-white')
                         }
                             onClick={() => onClick(filter.id)}
                         >

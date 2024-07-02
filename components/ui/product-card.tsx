@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
-import { Product, Size } from "@/types"
+import { Product, ProductSize, Size } from "@/types"
 import { Currency } from "@/components/ui/currency"
 
 interface ProductCardProps {
@@ -20,7 +20,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     }
 
     return (
-        <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+        <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4 hover:bg-gray-100 transition-colors">
             {/* Images and Actions */}
             <div className="aspect-square rounded-xl bg-gray-100 relative">
                 <Image
