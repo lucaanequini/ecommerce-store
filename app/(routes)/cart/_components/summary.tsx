@@ -20,7 +20,8 @@ export const Summary = () => {
 
     const onCheckout = async () => {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
-            productIds: items.map((item) => item.product.id)
+            productIds: items.map((item) => item.product.id),
+            selectedSizeId: items.map((item) => item.size.id),
         })
 
         window.location = response.data.url
