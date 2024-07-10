@@ -18,6 +18,18 @@ export const Summary = () => {
         return total + Number(item.product.price)
     }, 0)
 
+    useEffect(() => {
+        if (searchParams.get("success")) {
+            removeAll()
+            toast.success('Payment completed.')
+        }
+
+        if (searchParams.get("canceled")) {
+            toast.error('Something went wrong.')
+        }
+    }, [searchParams, removeAll])
+
+
     const onCheckout = async () => {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
             productIds: items.map((item) => item.product.id),
@@ -26,17 +38,6 @@ export const Summary = () => {
 
         window.location = response.data.url
     }
-
-    useEffect(() => {
-        if (searchParams.get("success")) {
-            toast.success('Payment completed.')
-            removeAll()
-        }
-
-        if (searchParams.get("canceled")) {
-            toast.error('Something went wrong.')
-        }
-    }, [searchParams, removeAll])
 
     return (
         <div className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
@@ -47,7 +48,7 @@ export const Summary = () => {
                 </div>
                 <Currency value={totalPrice} />
             </div>
-            <Button onClick={onCheckout} className="w-full mt-6">
+            <Button onClick={onCheckout} disabled={items.length === 0} className="w-full mt-6">
                 Checkout
             </Button>
         </div>
