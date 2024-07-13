@@ -34,6 +34,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
     })
 
     const sizes = await getSizes()
+    const ascSizes = sizes.sort((a, b) => a.value.localeCompare(b.value))
     const colors = await getColors()
     const category = await getCategory(params.categoryId)
 
@@ -47,14 +48,14 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
                 <div className="px-4 sm:px-6 lg:px-8 pb-24">
                     <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
                         <MobileFilters
-                            sizes={sizes}
+                            sizes={ascSizes}
                             colors={colors}
                         />
                         <div className="hidden lg:block">
                             <Filter
                                 valueKey='sizeId'
                                 name='Sizes'
-                                data={sizes}
+                                data={ascSizes}
                             />
                             <Filter
                                 valueKey='colorId'
@@ -69,7 +70,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
                                     <ProductCard
                                         key={product.id}
                                         data={product}
-                                        sizes={sizes}
+                                        sizes={ascSizes}
                                     />
                                 ))}
                             </div>
