@@ -1,6 +1,6 @@
 import qs from 'query-string';
 
-import { Product } from "@/types";
+import { Product, ProductSize } from "@/types";
 
 
 interface Query {
@@ -18,7 +18,6 @@ const getProducts = async (query: Query): Promise<Product[]> => {
         url: URL,
         query: {
             colorId: query.colorId,
-            sizeId: query.sizeId,
             categoryId: query.categoryId,
             isFeatured: query.isFeatured
         }
@@ -26,6 +25,12 @@ const getProducts = async (query: Query): Promise<Product[]> => {
 
     const res = await fetch(url);
     const products: Product[] = await res.json();
+
+    if (query.sizeId) {
+        return products.filter(product =>
+            product.sizes.some((size: ProductSize) => size.sizeId === query.sizeId)
+        )
+    }
 
     return products;
 }
